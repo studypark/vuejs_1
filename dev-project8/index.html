@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style>
+		.box {
+			border: 1px solid black;
+			width: 500px;
+		}
+		.option {
+			background-color: #ececec;
+		}
+		.option:hover {
+			background-color: yellow;
+		}
+	</style>
+</head>
+<body>
+	<div id="app">
+		<div @click="active = !active">
+			<div class="box">
+				{{ message }}
+			</div>
+			<div v-if="active">
+				<div class="box option" v-for="row in list" @click="setMessage(row)">
+					{{ row }}
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="vue.js"></script>
+	<script>
+		new Vue({
+			el: '#app',
+			data: {
+				message: '값을 선택해주세요',
+				active: false,
+				list: [
+					'스터디박',
+					'정',
+					'ㄱ나다',
+					'유재승',
+					'정대지'
+				]
+			},
+			methods: {
+				setMessage: function(message) {
+					this.message = message;
+				}
+			}
+		})
+	</script>
+</body>
+</html>
