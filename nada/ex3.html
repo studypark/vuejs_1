@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title> Vue 두번째 예제 </title>
+</head>
+<body>
+    <div id="app3">
+      <span v-if="seen">
+           이제 날 볼 수 있어요.
+      </span>
+    </div>
+    
+   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        new Vue({
+           el : '#app3',
+           data : {
+             seen :  true
+           }
+        });
+    </script>
+</body>
+</html>
