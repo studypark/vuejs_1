@@ -9,7 +9,9 @@
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <script src="main.js"></script>
     <style>
-        .my-combo {display: inline-block}       
+        .my-combo {position: relative; display: inline-block}
+        .my-combo ul {position: absolute; background-color: white}
+        .my-combo ul li {padding: 0px 2px 1px;}
         .my-combo div, .my-combo ul {cursor: pointer;border:1px solid blue; padding:0px; margin:0px}
         .my-combo div span:first-child {padding: 0px 2px 1px;}
         .my-combo div span:last-child {margin-left:5px}
