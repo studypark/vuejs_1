@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="main.js"></script>
+<body>
+    <div id="app">
+        <anchored-heading :level="heading"><div slot="hello">Hello world!</div><span slot="test">test</span></anchored-heading>
+        <select @change="changeHeading">
+            <option v-for="(item, index) in [1,2,3,4,5]" :value="item" :key="index" >{{item}}</option>            
+        </select>
+    </div>
+    <script type="text/x-template" id="anchored-heading-template">
+        <h1 v-if="level === 1">
+          <slot></slot>
+        </h1>
+        <h2 v-else-if="level === 2">
+          <slot></slot>
+        </h2>
+        <h3 v-else-if="level === 3">
+          <slot></slot>
+        </h3>
+        <h4 v-else-if="level === 4">
+          <slot></slot>
+        </h4>
+        <h5 v-else-if="level === 5">
+          <slot></slot>
+        </h5>
+        <h6 v-else-if="level === 6">
+          <slot></slot>
+        </h6>
+    </script>
+    <script>
+        Vue.config.devtools = true;
+        var comp = Vue.component('anchored-heading', {
+            //template: '#anchored-heading-template',
+            props: {
+                level: {
+                    type: Number,
+                    required: true
+                }
+            },
+            render(createElement) {
+                return createElement('h'+this.level, [this.$slots.hello, this.$slots.test])                
+            },
+        }) 
+        var app = new Vue({
+            el: '#app',
+            data: {
+                heading: 4
+            },
+            methods: {
+                changeHeading: function(e) {
+                    var h = event.target.value;
+                    this.heading = Number(h); 
+                }
+            }
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>

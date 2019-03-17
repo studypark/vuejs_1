@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>route 1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="main.js"></script>
+</head>
+<body>
+    <div id="app">
+    </div>
+    <script>
+        Vue.component('page-link', {
+            template: `
+                <ul>
+                    <li><a href="./example3.html?p=example3">example3</a></li>
+                    <li><a href="./example3.html?p=about">about</a></li>
+                    <li><a href="./example3.html?p=lost">lost</a></li>
+                </ul>
+            `
+        });   
+
+        const NotFound = { template: '<p>Page not found<page-link></page-link></p>' }
+        const Home = { template: '<p>home page<page-link></page-link></p>' }
+        const About = { template: '<p>about page<page-link></page-link></p>' }
+        const Example3 = { template: '<p>exmaple3<page-link></page-link></p>' }
+
+        const routes = {
+            '/': Home,
+            'about': About,
+            'example3': Example3
+        }
+
+        new Vue({
+            el: '#app',
+            data: {
+                currentRoute: window.location.queryString
+            },
+            computed: {
+                ViewComponent () {
+                    var page = getParameter('p');
+                    if (page==null || page == '') page = '/';
+                    console.log(page);
+                    return routes[page] || NotFound
+                }
+            },
+            render (h) { return h(this.ViewComponent) }
+        })
+
+
+    </script>    
+</body>
+</html>

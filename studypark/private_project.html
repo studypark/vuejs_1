@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="main.js"></script>
+    <style>
+        .my-combo {display: inline-block}       
+        .my-combo div, .my-combo ul {cursor: pointer;border:1px solid blue; padding:0px; margin:0px}
+        .my-combo div span:first-child {padding: 0px 2px 1px;}
+        .my-combo div span:last-child {margin-left:5px}
+        .my-combo ul li:hover {background: blue; color: white}
+    </style>
+</head>
+<body>
+    <div id="app">
+        <my-combo :items="items" v-on:change="showValue"></my-combo>
+        <hr/>
+        선택 : {{selectedInfo}}
+    </div>
+
+    <script>
+    
+    Vue.component('my-combo', {
+        template: `
+            <div class="my-combo">                
+                    <div @click="toggleList"><span>{{selectedText}}</span><span>▼</span></div>
+                    <ul v-show="expanded">
+                        <li v-for="(item, index) in items" :key="index" :data-index="index" @click="selectDone">{{item.text}}</li>
+                    </ul>
+            </div>
+        `,
+        props: ['items'],
+        data: function() {
+            return {
+                expanded: false,
+                selectedText: '',
+                selectedValue: ''
+            }
+        },
+        methods: {
+            toggleList: function(e){
+                this.expanded = !this.expanded;                
+            },            
+            selectDone: function(e) {
+                var el = e.target;                
+                var index = Number(el.dataset.index);
+                this.selectedText = this.items[index].text;
+                this.selectedValue = this.items[index];
+                this.expanded = false;
+                this.$emit('change', index);
+            }
+        },
+        created () {
+            if(this.items != null && this.items.length > 0) {
+                this.selectedText = this.items[0].text;
+                this.selectedValue = this.items[0];                
+            }
+        }
+    })
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            selectedIndex: -1,
+            items: [
+                {val:'1', text:'첫번째'},
+                {val:'2', text:'두번째'},
+                {val:'3', text:'세번째'},
+                {val:'4', text:'네번째'}
+            ]
+        },
+        computed: {
+            selectedInfo: function() {
+                if (this.selectedIndex < 0) return '선택된 값이 없습니다.';
+                return (this.selectedIndex+1) + '번째 항목 선택 (' + this.items[this.selectedIndex].val + ',' + this.items[this.selectedIndex].text + ')';
+            }
+        },
+        methods: {
+            showValue: function(index) {
+                this.selectedIndex = index;                
+            }
+        }
+    })    
+
+    </script>
+</body>
+</html>

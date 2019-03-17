@@ -1,5 +1,5 @@
 function getQueryString() {
-    var href = window.location.href;
+    var href = windows.location.href;
     var queryString = href.substring(href.indexOf('?')>=0?href.indexOf('?')+1 : 0);
     return queryString || '';
 }
@@ -16,3 +16,5 @@ function getParameter(name) {
     var arr1 = str1.split('&');
     return arr1[0];
 }
+
+export {getQueryString, getParameter}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="main.js"></script>
+    <script>
+        Vue.component('todo-item1', {
+            props: ['todo'],
+            template: '<li>{{ todo.text }}</li>'
+        });
+        Vue.component('todo-item2', {
+            props: ['todo'],
+            template: '<li v-html="todo.text"></li>'
+        })
+    </script>
+</head>
+<body>
+    <div id="app">
+        <ol>
+            <todo-item1 v-for="(item, index) in todos" :key="index" v-bind:todo="item"/>
+        </ol>
+        <ol>
+            <todo-item2 v-for="(item, index) in reversedTodos" :key="index" v-bind:todo="item"/>
+        </ol>
+    </div>
+    <script>
+        Vue.config.devtools = true;    
+        var todos = [
+                    {text: 'item1'},
+                    {text: 'item2'},
+                    {text: 'item3'},
+                    {text: '<span class="red">item4</span>'},
+                    {text: 'item5'}
+                ];
+
+        //Object.freeze(todos);
+        var app = new Vue({
+            el: '#app',
+            data: {
+                todos: todos
+            },
+            computed: {
+                reversedTodos: function () {
+                    return todos.reverse();
+                }
+            },
+        });
+
+        todos.push({text: 'item6'});
+    </script>
+</body>
+</html>

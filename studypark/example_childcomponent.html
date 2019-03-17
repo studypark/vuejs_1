@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="main.js"></script>
+</head>
+<body>
+    <div id="app">
+        <parent-component>
+            <child-component></child-component>
+        </parent-component>
+        <child-component></child-component>
+    </div>
+    <script>
+        Vue.component('parent-component', {
+            template: '<div></div>'
+            /* data: function() {
+                return {
+                    items: ['item1', 'item2', 'item3']
+                }
+            } */
+        })
+
+        Vue.component('child-component', {
+            template: '<ul><li>test</li><li v-for="(item, index) in items">{{item}}</li></ul>',
+            data: function() {
+                return {
+                    items: ['item1', 'item2', 'item3']
+                }
+            }             
+        })
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                items: ['item1', 'item2', 'item3']
+            }
+        })
+    </script>
+</body>
+</html>
