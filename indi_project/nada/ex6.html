@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title> Vue 여섯번째 예제 </title>
+</head>
+<body>
+    <div id="app6">
+        <ol>
+            <todo-item v-for="item in groceryList" 
+                v-bind:todo="item"
+                v-bind:key="item.id"></todo-item>
+        </ol>
+    </div>
+    
+   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+         Vue.component('todo-item',{
+         props: ['todo'],             
+         template : '<li>{{todo.text}}</li>'            
+         });
+        new Vue({
+           el : '#app6',
+          data : {
+              groceryList:[
+                  {id:0,text:'Vegetables'},
+                  {id:1,text:'Cheese'},
+                  {id:2,text:'Whatever else humans are'}
+              ]
+          }
+           
+        });
+    </script>
+</body>
+</html>
