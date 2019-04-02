@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="main.js"></script>
+</head>
+<body>
+
+    <div id="app">
+        <ul>
+            <li v-for="(item, index) in items" :key="index">{{item.userNm}}</li>
+        </ul>
+    </div>
+
+    <script>
+        var userList = [ 
+            {
+            "userId" : "studypark",
+            "userNm" : "스터디박",
+            "userPw" : "1234",
+            "auth" : "ADMIN"
+            }, {
+            "userId" : "banbyuk2",
+            "userNm" : "유재승",
+            "userPw" : "1234",
+            "auth" : "ADMIN"
+            }, {
+            "userId" : "BillJeong",
+            "userNm" : "정대지",
+            "userPw" : "1234",
+            "auth" : "ADMIN"
+            }, {
+            "userId" : "achivestar",
+            "userNm" : "나다",
+            "userPw" : "1234",
+            "auth" : "ADMIN"
+            }, {
+            "userId" : "dev-project8",
+            "userNm" : "정",
+            "userPw" : "1234",
+            "auth" : ""
+            } 
+        ];
+        
+        localStorage.setItem('userList', JSON.stringify(userList));
+
+console.log(JSON.stringify(userList));
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                items: JSON.parse(localStorage.getItem('userList'))
+            }
+        });
+    </script>
+
+</body>
+</html>
