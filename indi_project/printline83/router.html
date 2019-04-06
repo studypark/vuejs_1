@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+        <div id="app">
+            <h1>test</h1>
+            <p>
+                <router-link to="/login">Go to Login</router-link>
+                <router-link to="/list">Go to List</router-link>
+                <router-link to="/main">Go to Main</router-link>
+            </p>
+            <router-view></router-view>
+        </div>
+
+
+
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <script>
+        var Login = {
+            template: `
+            <div>
+                Login Section
+                <router-view></router-view'>
+            </div>
+            `,
+        }
+        var LoginForm = {
+            template: `
+            <div><input type="texgt" name="id"></div>
+            `,
+        }
+        var List = {
+            template: `
+            <div>
+                List setoin
+                <router-view></router-view>    
+            </div>
+            `,
+        }
+        var ListItems = {
+            template: `
+            <ul>
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+            </ul>
+            `,
+        }
+        var Main = {
+            template: `
+            <div>
+                Main setoin
+                <router-view></router-view>    
+            </div>
+            `,
+        }
+        var MainItems = {
+            template: `
+            <div>Main</div>
+            `,
+        }
+        var routes = [
+            {
+                path: '/login',
+                component: Login,
+                children: [
+                    { path: '', component: LoginForm }
+                ]
+            },
+            {
+                path: '/list',
+                component: List,
+                children: [
+                    { path: '', component: ListItems }
+                ]
+            },
+            {
+                path: '/main',
+                component: Main,
+                children: [
+                    { path: '', component: MainItems }
+                ]
+            },
+        ]
+
+        var router = new VueRouter({
+            routes
+        });
+
+        var app = new Vue({
+            router
+        }).$mount('#app');
+    </script>
+</body>
+</html>
