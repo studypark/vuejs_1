@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="text" id="input1" name="input1" v-model="input1" @change="printValue"/>
+        <button @click="plusChar()">문자추가</button><br>
+        <button @click="changeValueByJquery()">jquery로 바꾸기</button><br>
+        <button @click="changeValueByJavascript()">javascript로 바꾸기</button>
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                input1: 'test'
+            },
+            methods: {
+                printValue: function() {
+                    console.log(this.input1);
+                },
+                plusChar: function() {
+                    this.input1 = this.input1 + this.input1.length;
+                },
+                changeValueByJquery: function() {
+                    $('#input1').val('changed by jquery');
+                },
+                changeValueByJavascript: function() {
+                    document.getElementById('input1').value = 'changed by pure javascript';
+                }
+            },
+        })
+    </script>
+</body>
+</html>
