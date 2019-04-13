@@ -13,11 +13,24 @@
 <body>
     
     <div id="app" class="container">
-        <user-manage></user-manage>
-        
-            
+        <user-manage inline-template>
+                <table class="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>아이디</th>
+                        <th>이름</th>
+                        <th>권한</th>
+                    </tr>
+                    </thead>
+                    <tr v-for="(item, index) in users" :key="index">
+                        <td><a href="#" @click="popupUser(index)">{{item.userId}}</a></td>
+                        <td>{{item.userNm}}</td>
+                        <td>{{item.auth}}</td>
+                    </tr>
+                </table>                    
+        </user-manage>
     </div>
-    <div id="myModal" class="modal" tabindex="-1" role="dialog">
+        <div id="myModal" class="modal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -41,6 +54,68 @@
     Launch demo modal
     </button>
           
+    <script type="text/x-template" id="user-manage-template">
+        <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th>아이디</th>
+                    <th>이름</th>
+                    <th>권한</th>
+                </tr>
+                </thead>
+                <tr v-for="(item, index) in users" :key="index">
+                    <td><a href="#" @click="popupUser(index)">{{item.userId}}</a></td>
+                    <td>{{item.userNm}}</td>
+                    <td>{{item.auth}}</td>
+                </tr>
+            </table>        
+    </script>
+    <script type="text/x-template" id="user-info-template">
+        <form>
+                <div class="form-group row">
+                    <label for="userId" class="col-sm-2 col-form-label">아이디</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="userId" placeholder="아이디">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="userNm" class="col-sm-2 col-form-label">이름</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="userNm" placeholder="이름">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="userPw" class="col-sm-2 col-form-label">비밀번호</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" id="userPw" placeholder="비밀번호">
+                    </div>
+                </div>
+                <fieldset class="form-group">
+                    <div class="row">
+                        <legend class="col-form-label col-sm-2 pt-0">권한</legend>
+                        <div class="col-sm-10">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="auth" id="auth1" value="USER" checked>
+                                <label class="form-check-label" for="auth1">
+                                    사용자
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="auth" id="auth2" value="ADMIN">
+                                <label class="form-check-label" for="auth2">
+                                    관리자
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary">Sign in</button>
+                    </div>
+                </div>
+            </form>        
+    </script>
     <script>
         function popupModal() {
             $('#myModal').modal();
@@ -76,22 +151,7 @@
             } 
         ]
         Vue.component('user-manage', {
-            template: `
-                <table class="table">
-                    <thead class="thead-dark">
-                    <tr>
-                        <th>아이디</th>
-                        <th>이름</th>
-                        <th>권한</th>
-                    </tr>
-                    </thead>
-                    <tr v-for="(item, index) in users" :key="index">
-                        <td><a href="#" @click="popupUser(index)">{{item.userId}}</a></td>
-                        <td>{{item.userNm}}</td>
-                        <td>{{item.auth}}</td>
-                    </tr>
-                </table>
-            `,
+            //template: '#user-manage-template',
             data: function() {
                 return {
                     users: users
@@ -112,53 +172,8 @@
             }
         })
 
-        Vue.component('userinfo', {
-            template: `
-                <form>
-                    <div class="form-group row">
-                        <label for="userId" class="col-sm-2 col-form-label">아이디</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="userId" placeholder="아이디">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="userNm" class="col-sm-2 col-form-label">이름</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="userNm" placeholder="이름">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="userPw" class="col-sm-2 col-form-label">비밀번호</label>
-                        <div class="col-sm-10">
-                            <input type="password" class="form-control" id="userPw" placeholder="비밀번호">
-                        </div>
-                    </div>
-                    <fieldset class="form-group">
-                        <div class="row">
-                            <legend class="col-form-label col-sm-2 pt-0">권한</legend>
-                            <div class="col-sm-10">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="auth" id="auth1" value="USER" checked>
-                                    <label class="form-check-label" for="auth1">
-                                        사용자
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="auth" id="auth2" value="ADMIN">
-                                    <label class="form-check-label" for="auth2">
-                                        관리자
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-                    <div class="form-group row">
-                        <div class="col-sm-10">
-                            <button type="submit" class="btn btn-primary">Sign in</button>
-                        </div>
-                    </div>
-                </form>
-            `,
+        Vue.component('user-info', {
+            template: '#user-info-template',
             props: ['user'], 
             methods: {
                 closeThis: function() {
