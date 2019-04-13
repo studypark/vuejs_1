@@ -73,7 +73,8 @@
           <button id="show-modal" @click="showModal = true">Show Modal</button>            
           <modal v-if="showModal" @close="showModal = false">              
             <h3 slot="header">custom header</h3>
-            <form slot="body">
+            <div slot="body" class="row">
+                <form>
                     <div class="form-group row">
                         <label for="userId" class="col-sm-2 col-form-label">아이디</label>
                         <div class="col-sm-10">
@@ -117,6 +118,7 @@
                         </div>
                     </div>
                 </form>                    
+            </div>
           </modal>
         </div>    
         
