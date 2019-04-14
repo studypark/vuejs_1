@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vee-validate@latest"></script>
     <title>사용자관리</title>
     <style>
         .modal-mask {
@@ -27,7 +28,7 @@
         }
 
         .modal-container {
-            /* width: 300px; */
+            width: 450px;
             margin: 0px auto;
             padding: 20px 30px;
             background-color: #fff;
@@ -71,71 +72,13 @@
 <body>
     
     <div id="app" class="container">
-        <user-manage inline-template>
-                <table class="table">
-                    <thead class="thead-dark">
-                    <tr>
-                        <th>아이디</th>
-                        <th>이름</th>
-                        <th>권한</th>
-                    </tr>
-                    </thead>
-                    <tr v-for="(item, index) in users" :key="index">
-                        <td><a href="#" @click="popupUser(index)">{{item.userId}}</a></td>
-                        <td>{{item.userNm}}</td>
-                        <td>{{item.auth}}</td>
-                    </tr>
-                </table>                    
-        </user-manage>
-        <user-info v-if="showUserInfo" @close="showUserInfo = false">              
-                <h3 slot="header">custom header</h3>
-                <div slot="body">
-                    <form>
-                        <div class="form-group row">
-                            <label for="userId" class="col-sm-2 col-form-label">아이디</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="userId" placeholder="아이디">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="userNm" class="col-sm-2 col-form-label">이름</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="userNm" placeholder="이름">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="userPw" class="col-sm-2 col-form-label">비밀번호</label>
-                            <div class="col-sm-10">
-                                <input type="password" class="form-control" id="userPw" placeholder="비밀번호">
-                            </div>
-                        </div>
-                        <fieldset class="form-group">
-                            <div class="row">
-                                <legend class="col-form-label col-sm-2 pt-0">권한</legend>
-                                <div class="col-sm-10">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="auth" id="auth1" value="USER" checked>
-                                        <label class="form-check-label" for="auth1">
-                                            사용자
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="auth" id="auth2" value="ADMIN">
-                                        <label class="form-check-label" for="auth2">
-                                            관리자
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                        <div class="form-group row">
-                            <div class="col-sm-10">
-                                <button type="submit" class="btn btn-primary">Sign in</button>
-                            </div>
-                        </div>
-                    </form>                    
-                </div>
-            </user-info>
+        <user-manage></user-manage>
+        <user-info v-if="showUserInfo" @close="showUserInfo = false" :user="selectedUser">
+        </user-info>
+
+        <div class="text-right">
+            <button type="button" class="btn btn-primary" @click="selectedUser = null; showUserInfo = true">등록</button>            
+        </div>
     </div>
           
     <script type="text/x-template" id="user-manage-template">
@@ -154,74 +97,79 @@
                 </tr>
             </table>        
     </script>
-    <script type="text/x-template" id="user-info-template1">
-        <form>
-                <div class="form-group row">
-                    <label for="userId" class="col-sm-2 col-form-label">아이디</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="userId" placeholder="아이디">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="userNm" class="col-sm-2 col-form-label">이름</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="userNm" placeholder="이름">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="userPw" class="col-sm-2 col-form-label">비밀번호</label>
-                    <div class="col-sm-10">
-                        <input type="password" class="form-control" id="userPw" placeholder="비밀번호">
-                    </div>
-                </div>
-                <fieldset class="form-group">
-                    <div class="row">
-                        <legend class="col-form-label col-sm-2 pt-0">권한</legend>
-                        <div class="col-sm-10">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="auth" id="auth1" value="USER" checked>
-                                <label class="form-check-label" for="auth1">
-                                    사용자
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="auth" id="auth2" value="ADMIN">
-                                <label class="form-check-label" for="auth2">
-                                    관리자
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-                <div class="form-group row">
-                    <div class="col-sm-10">
-                        <button type="submit" class="btn btn-primary">Sign in</button>
-                    </div>
-                </div>
-            </form>        
-    </script>
+    
     <script type="text/x-template" id="user-info-template">
         <transition name="modal">
             <div class="modal-mask">
             <div class="modal-wrapper">
                 <div class="modal-container">                    
                 <div class="modal-header">
-                    <slot name="header">
-                    default header
-                    </slot>
-                    <button class="modal-default-button" @click="$emit('close')">X</button>
+                    <h3>{{title}}</h3>
+                    <button class="modal-default-button" @click="closeThis()">X</button>
                 </div>
         
                 <div class="modal-body">
-                    <slot name="body">
-                    default body
-                    </slot>
+                    <form @submit.prevent="saveUser">
+                        <div class="form-group row">
+                            <label for="userId" class="col-sm-4 col-form-label">아이디</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="userId" name="userId" placeholder="아이디" v-model="userId" v-validate="'required'">
+                                <small v-if="errors.has('userId')" class="alert-danger">{{ errors.first('userId') }}</small>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="userNm" class="col-sm-4 col-form-label">이름</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="userNm" name="userNm" placeholder="이름" v-model="userNm" v-validate="'required'">
+                                <small v-if="errors.has('userNm')" class="alert-danger">{{ errors.first('userNm') }}</small>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="userPw" class="col-sm-4 col-form-label">비밀번호</label>
+                            <div class="col-sm-6">
+                                <input type="password" class="form-control" id="userPw" name="userPw" placeholder="비밀번호" v-model="userPw" v-validate="'required'">
+                                <small v-if="errors.has('userPw')" class="alert-danger">{{ errors.first('userPw') }}</small>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="userPw" class="col-sm-4 col-form-label">비밀번호확인</label>
+                            <div class="col-sm-6">
+                                <input type="password" class="form-control" id="userPw2" name="userPw2" placeholder="비밀번호확인" v-model="userPw2" v-validate="'required'">
+                                <small v-if="errors.has('userPw2')" class="alert-danger">{{ errors.first('userPw2') }}</small>
+                            </div>
+                        </div>
+                        <fieldset class="form-group">
+                            <div class="row">
+                                <legend class="col-form-label col-sm-4 pt-0">권한</legend>
+                                <div class="col-sm-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="auth" id="auth1" value="USER" v-model="auth">
+                                        <label class="form-check-label" for="auth1">
+                                            사용자
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="auth" id="auth2" value="ADMIN" v-model="auth">
+                                        <label class="form-check-label" for="auth2">
+                                            관리자
+                                        </label>
+                                    </div>
+                                    <small v-if="errors.has('auth')" class="alert-danger">{{ errors.first('auth') }}</small>
+                                </div>                                
+                            </div>
+                        </fieldset>
+                        
+                    </form>
                 </div>
         
                 <div class="modal-footer">
-                    <slot name="footer">
-                    default footer                        
-                    </slot>
+                    <div class="form-group row">
+                        <div>
+                            <button type="button" class="btn btn-primary" @click="saveUser()">저장</button>
+                            <button type="button" class="btn btn-danger" @click="deleteUser()" v-if="user != null">삭제</button>
+                            <button type="button" class="btn btn-secondary" @click="closeThis()">취소</button>
+                        </div>
+                    </div>
                 </div>
                 </div>
             </div>
@@ -229,6 +177,8 @@
         </transition>
     </script>              
     <script>
+        Vue.use(VeeValidate);   // VeeValidate 
+
         var users = [ 
             {
                 "userId" : "studypark",
@@ -254,56 +204,95 @@
                 "userId" : "dev-project8",
                 "userNm" : "정",
                 "userPw" : "1234",
-                "auth" : "ADMIN"
+                "auth" : "USER"
             } 
         ]
         Vue.component('user-manage', {
-            //template: '#user-manage-template',
+            template: '#user-manage-template',
             data: function() {
                 return {
                     users: users
                 }
-            },
+            },            
             methods: {
                 getUserList: function() {
                     this.users = user;
                 },
                 popupUser: function(i) {
                     var user = this.users[i];
-                    var userId = user.userId;
-                    console.log(this.$root.showUserInfo);
+                    this.$root.selectedUser = user;
                     this.$root.showUserInfo = true;
-
-                    /* $('#myModal').on('shown.bs.modal', function () {
-                    }); */
                 }
             }
         })
 
         Vue.component('user-info', {
             template: '#user-info-template',
-            props: ['user'], 
+            props: ['user'],
+            data: function() {
+                return {
+                    userId: '',
+                    userNm: '',
+                    userPw: '',
+                    userPw2: '',
+                    auth: ''
+                }
+            },
+            computed: {
+                title: function() {
+                    return this.user==null?"회원 등록":"회원 수정";
+                }
+            },
             methods: {
                 closeThis: function() {
-                    
+                    this.userId = '';
+                    this.userNm = '';
+                    this.userPw = '';
+                    this.userPw2 = '';
+                    this.auth = '';
+                    this.$emit('close');
+                },
+                saveUser: function() {                    
+                    if (this.user == null) {
+                        this.addUser();
+                    } else {
+                        this.updateUser();
+                    }
                 },
                 addUser: function() {
-
+                    // TODO validation
+                    this.$validator.validate().then((result) => {
+                        console.log(result);
+                    });
+                    // TODO 등록 처리
                 },
                 updateUser: function() {
-
+                    // TODO validation
+                    // TODO 갱신 처리
                 },
                 deleteUser: function() {
-
+                    if (confirm('정말 삭제하시겠습니까?')) {
+                        // TODO 삭제 처리
+                    }
+                }
+            },
+            mounted() {
+                console.log('mounted', this.user);
+                if (this.user != null) {
+                    this.userId = this.user.userId;
+                    this.userNm = this.user.userNm;
+                    this.auth = this.user.auth;      
                 }
             }
         })
         var vm = new Vue({
             el: '#app',
             data: {
-                showUserInfo: false
+                showUserInfo: false,
+                selectedUser: null
             }
         })
+        
     </script>
 </body>
 </html>
