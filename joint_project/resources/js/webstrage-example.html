@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <script src="https://unpkg.com/vue@2.6.10/dist/vue.js"></script>
+        <script src="webstorage-service.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <input type="text" v-model="member.name">
+            <button @click="addMember">저장</button>
+            <button @click="printMember"> 불러오기</button>
+        </div>
+    </body>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                member: {}
+            },
+            mounted: function() {
+                console.log(this.memberService.findAll())
+            },
+            methods: {
+                addMember: function() {
+                    this.memberService.create(this.member)
+                },
+                printMember: function() {
+                    console.log(this.memberService.findAll())
+                }
+            }
+        })
+    </script>
+</html>
