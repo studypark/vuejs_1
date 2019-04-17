@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" />
+	<title> 컬러매모장 </title>
+<style>
+     .head{
+        background:#fef098;
+        border:1px solid #ccc;
+        margin:0; padding:0;
+        overflow:hidden;
+        opacity: 0.6;
+    }
+
+    .head  > .top_nav{
+        height:62px;
+        line-height: 62px;
+    }
+    .head > .top_nav a{
+        display:inline-block;
+        padding:0 10px;
+        color:#000;
+        text-decoration: none
+    }
+    .head > .top_nav a:hover{
+        color:#fff4b6;
+        background: #000;
+    }
+    .head > .top_nav >a.add{
+        float:left;
+    }
+	 .head > .top_nav .colorbox{
+		position:absolute;
+		top:-25px;
+		right:10px;
+	 }
+    .app {position:relative}
+    .app > .body ul{
+        list-style:none;
+        margin:0;
+        padding:0;
+        
+    }
+    
+    .app > .body ul li{
+        margin-top:10px;
+        padding:15px 0px;
+        width:100%;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+		box-shadow:3px 3px 2px gray;
+        position:relative;
+		cursor:pointer;
+    }
+    .app > .body ul  li p span.con{
+        display:inline-block;
+        width:30%;
+        overflow:hidden;
+        white-space: nowrap;
+        text-overflow:ellipsis;
+    }
+
+    .regDate{
+        position:absolute;bottom:0px;right:30px;font-size:0.8em;
+    }
+    .searchbox{
+        position:absolute;top:-18px;left:60px;
+    }
+	.statebox{
+        position:absolute;top:24px;right:12px;
+    }
+    .memoNo{
+        float:left;font-size:0.8em;
+    }
+    .memoInfo{
+        position:absolute;top:10px;right:30px;font-size:0.8em;
+    }
+    .memoCon{
+        clear: both;padding-left:10px;min-height:20px;
+    }
+    .trash{
+        position:absolute;top:10px;right:10px;font-size:16px;color:#000
+    }
+    i{
+         font-size:1.5rem;cursor: pointer
+    }
+    .search{
+        width:100%;
+        height:30px;
+        
+    }
+
+     /* 글상자 */
+    .write > textarea{  
+        font-size: 20px;
+        margin:0; padding:10px;
+        box-sizing: border-box;
+        width:100%;height: 400px;
+        background: lightyellow;
+        border-top:none;
+        outline: none;
+        resize: none;
+    }
+
+</style>	
+</head>
+<body>
+<div id="app" class="app">
+    <div class="head" :style="bgColor">
+        <nav class="top_nav" >
+                <a href='#' class="add" v-on:click="write()" v-if="mode ==='list'" ><i class='fa fa-plus'></i></a>
+                <a href='#' class="save" v-on:click="save()" v-if="mode ==='write'"><i class="far fa-save"></i></a>
+                <a href="#" class="get" v-on:click="list()" v-if="mode ==='write'"><i class="fa fa-list"></i></a>
+				<p class="colorbox"  v-if="mode=='write'">Choose to color : <input type="color"  id="color" v-model="bgColor.backgroundColor"/></p>
+				<p  v-if="mode ==='list'" class="searchbox"><input v-model="search" v-on:keyup="filter" type="text" class="search"  placeholder="search.." ></p>
+    </div>
+    <div class="body"> 
+		
+        <div class="list" v-if="mode ==='list'">
+            <ul  v-if="mode ==='list'"  v-for="m in memos">
+                <li  v-bind:style="m.color" v-show="m.filtered!=='y' ">
+                <i class="fas fa-times trash" v-on:click="del()"></i> 
+                <p class="memoInfo"><span>{{m.regNm}} | {{m.regId}}</span></p>
+                <p class="memoCon"><span class="con">{{m.content}}</span></p>
+                <p class="regDate"><span>{{m.regDt}}</span></p>
+                </li>
+            </ul>	
+        </div>
+        <p class="statebox" v-if="mode ==='write'">writing..</p>
+        <div class="write" v-if="mode === 'write'">
+                <textarea name="txt" class="txt" v-model="memo.content" :style="bgColor"></textarea>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script>
+        var memoApp = new Vue({
+            el : '#app',
+            data : {
+                 memo : {
+                   memoNo : null,
+                   content : null,
+                   regNm : null,
+                   regId : null,
+                   regDt : null,
+                   modNm : null,
+                   modId : null,
+                   modDt : null,
+                   color : '#F4FA58'
+                 }, 
+                 bgColor: {
+                 backgroundColor: "#F4FA58"
+                },
+                mode : 'list',
+				search : '',
+                memos : [
+                   {
+                      "memoNo" : 1,
+                      "content" : "첫번째메모",
+                      "regNm" : "스터디박",
+                      "regId" : "studypark",
+                      "regDt" : "2019/4/15 am 6:30",
+                      "modNm" : "",
+                      "modId" : "",
+                      "modDt" : ""
+                    } 
+                ]
+            },
+            methods : {
+			    filter : function(){
+					var isFiltered = false;
+					
+					var memoObj = {};
+					for(var i=0; i< this.memos.length; i++){
+						isFiltered = false;
+						memoObj  = this.memos[i];
+					
+						if(!isFiltered && memoObj.content.toUpperCase().indexOf(this.search.toUpperCase()) == -1){
+							isFiltered = true;
+						}
+
+						if(isFiltered){
+							memoObj.filtered = "y";
+						}else{
+							memoObj.filtered = "n";
+						}
+						
+					}
+				},
+                write : function(){
+                    this.mode = 'write';
+                },
+                save : function(){
+				    if(this.memo.content == null){
+						alert("메모를 작성해주세요");
+					}
+                    var id = this.memos.length+1;
+                    var d = new Date();
+                    var ampm = null;
+                    if(d.getHours() >= 12){
+                        ampm = "pm";
+                    }else{
+                        ampm = "am";
+                    }
+                    if(d.getMinutes()<10){
+                        var minute = "0"+d.getMinutes();
+                    }else{
+                        var minute = d.getMinutes();
+                    }
+                    if(d.getSeconds()<10){
+                        var seconds = "0"+d.getSeconds();
+                    }else{
+                         var seconds = d.getSeconds();
+                    }
+                    var time = d.getFullYear()+"/"+(d.getMonth()+1)+"/"+d.getDate()+" "+ampm+" "+d.getHours()+":"+minute;
+                    var color = document.getElementById("color").value;
+                     if(this.memo.content != null){
+                         var msg = confirm('저장하시겠습니까?');
+                            if(msg){
+                                this.memos.push({
+                                  memoNo: '#'+id,
+                                  content: this.memo.content,
+                                  regDt : time,
+                                  regNm : '스터디박',
+                                  regId : 'studypark',
+                                  color : 'background-color:'+color
+                               });
+
+                             localStorage.setItem('memos',JSON.stringify(this.memos));
+                              location.reload();
+                              this.memo.content = null;    
+                              this.mode = 'list';
+                         
+                         }else{
+                              this.memo.content = null;    
+                              this.mode = 'list';
+                              return;
+                           
+                         }
+                       
+                     }
+ 
+                },
+                list : function(){
+                    this.mode = 'list';
+                },
+                del : function(){
+                    var msg = confirm('삭제하시겠습니까?');
+                }
+           
+            },	
+            created : function(){
+                this.mode = 'list';
+                var memos = localStorage.getItem('memos');
+                if(memos){
+                    this.memos = JSON.parse(memos);
+                }
+               
+            }
+        });
+    </script>
+</body>
+</html>
