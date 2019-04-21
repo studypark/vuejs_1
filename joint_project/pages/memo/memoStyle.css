@@ -1,0 +1,101 @@
+.head{
+    background:#fef098;
+    border:1px solid #ccc;
+    margin:0; padding:0;
+    overflow:hidden;
+    opacity: 0.6;
+}
+
+.head  > .top_nav{
+    height:62px;
+    line-height: 62px;
+}
+.head > .top_nav a{
+    display:inline-block;
+    padding:0 10px;
+    color:#000;
+    text-decoration: none
+}
+.head > .top_nav a:hover{
+    color:#fff4b6;
+    background: #000;
+}
+.head > .top_nav >a.add{
+    float:left;
+}
+ .head > .top_nav .colorbox{
+    position:absolute;
+    top:-25px;
+    right:10px;
+ }
+.app {position:relative}
+.app > .body ul{
+    list-style:none;
+    margin:0;
+    padding:0;
+    position:relative;
+}
+
+.app > .body ul li{
+    margin-top:10px;
+    padding:15px 0px;
+    width:100%;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow:1px 1px 1px gray;
+    cursor:pointer;
+}
+.app > .body ul  li p span.con{
+    display:inline-block;
+    width:30%;
+    overflow:hidden;
+    white-space: nowrap;
+    text-overflow:ellipsis;
+}
+
+.regDate{
+    position:absolute;bottom:0px;right:30px;font-size:0.8em;
+}
+.searchbox{
+    position:absolute;top:-18px;left:120px;width:300px;
+
+}
+.statebox{
+    position:absolute;top:24px;right:12px;
+}
+.memoNo{
+    float:left;font-size:0.8em;
+}
+.memoInfo{
+    position:absolute;top:10px;right:30px;font-size:0.8em;
+}
+.memoCon{
+    clear: both;padding-left:10px;min-height:20px;
+}
+.trash{
+    position:absolute;top:10px;right:10px;font-size:12px;color:#000;text-decoration: none;
+}
+i{
+     font-size:1.5rem;cursor: pointer
+}
+i.del{
+    font-size:12px;
+}
+.search{
+    width:100%;
+    height:30px;
+    padding-left:10px;
+    
+}
+
+ /* 글상자 */
+.write > textarea{  
+    font-size: 20px;
+    margin:0; padding:10px;
+    box-sizing: border-box;
+    width:100%;height: 400px;
+    background: lightyellow;
+    border-top:none;
+    outline: none;
+    resize: none;
+}
