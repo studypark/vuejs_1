@@ -53,10 +53,18 @@
                 return obj;
             },
             update: function(id, obj) {
-                var list = localStorage.getItem() || '[]';
-                list = JSON.parse(list)
-                list.push(obj);
-                localStorage.setItem(list);
+                var list = getItem() || [];
+                var pk = getPkName();
+                var idx = list.map(function(e) {return e[pk]}).indexOf(id);
+                list[idx] = obj;
+                setItem(list);
+            },
+            delete: function(id) {
+                var list = getItem() || [];
+                var pk = getPkName();
+                var idx = list.map(function(e) {return e[pk]}).indexOf(id);
+                list.splice(idx,1);
+                setItem(list);
             }
         }
     }
