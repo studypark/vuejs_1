@@ -8,6 +8,8 @@
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/vee-validate@latest"></script>
+    <script src="../../resources/js/initdata.js"></script>
+    <script src="../../resources/js/webstorage-service.js"></script>
     <title>사용자관리</title>
     <style>
         .modal-mask {
@@ -179,50 +181,26 @@
     <script>
         Vue.use(VeeValidate);   // VeeValidate 
 
-        var users = [ 
-            {
-                "userId" : "studypark",
-                "userNm" : "스터디박",
-                "userPw" : "1234",
-                "auth" : "ADMIN"
-            }, {
-                "userId" : "banbyuk2",
-                "userNm" : "유재승",
-                "userPw" : "1234",
-                "auth" : "ADMIN"
-            }, {
-                "userId" : "BillJeong",
-                "userNm" : "정대지",
-                "userPw" : "1234",
-                "auth" : "ADMIN"
-            }, {
-                "userId" : "achivestar",
-                "userNm" : "나다",
-                "userPw" : "1234",
-            "auth" : "ADMIN"
-            }, {
-                "userId" : "dev-project8",
-                "userNm" : "정",
-                "userPw" : "1234",
-                "auth" : "USER"
-            } 
-        ]
         Vue.component('user-manage', {
             template: '#user-manage-template',
             data: function() {
                 return {
-                    users: users
+                    users: null,
+                    memberService: this.$root.memberService
                 }
             },            
             methods: {
-                getUserList: function() {
-                    this.users = user;
+                loadUserList: function() {
+                    this.users = this.memberService.findAll();
                 },
                 popupUser: function(i) {
                     var user = this.users[i];
                     this.$root.selectedUser = user;
                     this.$root.showUserInfo = true;
                 }
+            },
+            mounted() {
+                this.loadUserList();                
             }
         })
 

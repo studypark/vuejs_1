@@ -40,7 +40,7 @@
         }
     }
 
-    var memberService = new WS('member');
+    var memberService = new WS('member', '');
     var memuService = new WS('menu');
     var memoService = new WS('memo');
     Vue.prototype.memberService = memberService;
