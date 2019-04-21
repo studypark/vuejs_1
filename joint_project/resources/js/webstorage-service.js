@@ -1,5 +1,6 @@
 (function(Vue) {
-    var WS = function(key, pkname) {        
+    var WS = function(key, pkname, autoinc) {        
+        autoinc = autoinc || false; // 키값 자동 증가 여부
 
         function setItem(list) {
             localStorage.setItem(key, JSON.stringify(list));
@@ -20,6 +21,10 @@
             return pkname;
         }
 
+        function getAutoinc() {
+            return autoinc;
+        }
+
         return {
             findOne: function(id) {
                 return getItem().find(function(e) {
@@ -34,9 +39,15 @@
             create: function(obj) {
                 list = getItem()
                 
-                if (getPkName() == null) {
-                    obj.id = genId();
+                if (getAutoinc()) { // 자동 증가일 경우
+                    var pk = getPkName();
+                    if (pk == null) {
+                        obj.id = genId();
+                    } else {
+                        obj[pk] = genId();
+                    }
                 }
+
                 list.push(obj);
                 setItem(list)
                 return obj;
@@ -51,8 +62,8 @@
     }
 
     var memberService = new WS('member', 'userId');
-    var memuService = new WS('menu', 'menuNo');
-    var memoService = new WS('memo', 'memoNo');
+    var memuService = new WS('menu', 'menuNo', true);
+    var memoService = new WS('memo', 'memoNo', true);
     Vue.prototype.memberService = memberService;
     Vue.prototype.memuService = memuService;
     Vue.prototype.memoService = memoService;
