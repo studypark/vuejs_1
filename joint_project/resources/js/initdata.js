@@ -90,7 +90,8 @@ function loadInitData() {
   localStorage.setItem('member', JSON.stringify(initData.userList));
   localStorage.setItem('menu', JSON.stringify(initData.menuList));
   localStorage.setItem('memo', JSON.stringify(initData.memoList));
-
+  localStorage.setItem('menu_id', 3); // 자동키생성 데이터
+  localStorage.setItem('memo_id', 1); // 자동키생성 데이터
   localStorage.setItem('dataloaded', 'ok');
 
   console.log('init data loaded');
