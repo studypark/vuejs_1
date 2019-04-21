@@ -1,5 +1,6 @@
 (function(Vue) {
-    var WS = function(key) {
+    var WS = function(key, pkname) {        
+
         function setItem(list) {
             localStorage.setItem(key, JSON.stringify(list));
         }
@@ -15,10 +16,16 @@
             return id;
         }
 
+        function getPkName() {            
+            return pkname;
+        }
+
         return {
             findOne: function(id) {
-                return getItem().filter(function(e) {
-                    e.id = id
+                return getItem().find(function(e) {
+                    var pk = getPkName();
+                    if (pk == null) pk = 'id';
+                    return e[pk] == id;
                 });
             },
             findAll: function() {
@@ -26,7 +33,10 @@
             },
             create: function(obj) {
                 list = getItem()
-                obj.id = genId();
+                
+                if (getPkName() == null) {
+                    obj.id = genId();
+                }
                 list.push(obj);
                 setItem(list)
                 return obj;
@@ -40,9 +50,9 @@
         }
     }
 
-    var memberService = new WS('member', '');
-    var memuService = new WS('menu');
-    var memoService = new WS('memo');
+    var memberService = new WS('member', 'userId');
+    var memuService = new WS('menu', 'menuNo');
+    var memoService = new WS('memo', 'memoNo');
     Vue.prototype.memberService = memberService;
     Vue.prototype.memuService = memuService;
     Vue.prototype.memoService = memoService;
