@@ -79,9 +79,10 @@ function loadInitData() {
         "regNm" : "스터디박",
         "regId" : "studypark",
         "regDt" : "20190329065711",
-        "modNm" : "",
+        "color" : 'background-color: #F4FA58'
+         /* "modNm" : "",
         "modId" : "",
-        "modDt" : ""
+        "modDt" : "" */
       } 
     ]
   };
