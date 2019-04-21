@@ -194,7 +194,7 @@
                     this.users = this.memberService.findAll();
                 },
                 popupUser: function(i) {
-                    var user = this.users[i];
+                    var user = this.memberService.findOne(this.users[i].userId);
                     this.$root.selectedUser = user;
                     this.$root.showUserInfo = true;
                 }

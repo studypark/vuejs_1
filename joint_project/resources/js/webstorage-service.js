@@ -1,5 +1,7 @@
 (function(Vue) {
-    var WS = function(key) {
+    var WS = function(key, pkname, autoinc) {        
+        autoinc = autoinc || false; // 키값 자동 증가 여부
+
         function setItem(list) {
             localStorage.setItem(key, JSON.stringify(list));
         }
@@ -15,10 +17,20 @@
             return id;
         }
 
+        function getPkName() {            
+            return pkname;
+        }
+
+        function getAutoinc() {
+            return autoinc;
+        }
+
         return {
             findOne: function(id) {
-                return getItem().filter(function(e) {
-                    e.id = id
+                return getItem().find(function(e) {
+                    var pk = getPkName();
+                    if (pk == null) pk = 'id';
+                    return e[pk] == id;
                 });
             },
             findAll: function() {
@@ -26,7 +38,16 @@
             },
             create: function(obj) {
                 list = getItem()
-                obj.id = genId();
+                
+                if (getAutoinc()) { // 자동 증가일 경우
+                    var pk = getPkName();
+                    if (pk == null) {
+                        obj.id = genId();
+                    } else {
+                        obj[pk] = genId();
+                    }
+                }
+
                 list.push(obj);
                 setItem(list)
                 return obj;
@@ -40,9 +61,9 @@
         }
     }
 
-    var memberService = new WS('member', '');
-    var memuService = new WS('menu');
-    var memoService = new WS('memo');
+    var memberService = new WS('member', 'userId');
+    var memuService = new WS('menu', 'menuNo', true);
+    var memoService = new WS('memo', 'memoNo', true);
     Vue.prototype.memberService = memberService;
     Vue.prototype.memuService = memuService;
     Vue.prototype.memoService = memoService;
